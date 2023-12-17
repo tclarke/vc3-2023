@@ -1,0 +1,33 @@
+ZX Spectrum VC3-2023
+
+Author: Trevor R.H. Clarke <retrev@csh.rit.edu>
+Category: <Christmas Challenge or Wild>
+System:   ZX Spectrum 48k
+Language: z80 macro assembler (SjASMPlus flavor)
+Len source code: 6600
+Len exe file:    49179
+Len code only:   188
+Instructions:
+Use and ZX Spectrum 48k you'd like but you can find an online one here: https://jsspeccy.zxdemo.org
+Click the Folder icon and select the .sna file. It should load and execute in a second or two.
+
+Description:
+It's a pretty simple program optimized for size not speed. I'm using some routines written by Deam Belfield,
+to clear the screen and draw the characters in the correct place. I've rewritten them a bit to cut size down as much as possible.
+
+The coordinates of the border asterisks are stored as bytes in the stack area. There's some buffer above it
+to ensure we don't overwrite the code during routine calls.
+
+Setup disables interrupts, loads the SP, and clears the screen.
+
+The main loop copies the next coordinate from the stack, draws the line down and to the left, copies the coordinate
+again and draws the down and right line, and finally pops the coordinate and draw the line that's up and right. If
+we've hit the top of the stack, it's done and we halt, otherwise we loop and do it again.
+
+There are some code docs explaining in greater detail.
+
+Comments:
+The executable code is entirely contained in the $8000 block of memory. You can subtract that from the last thing in the block (the top_of_stack) to
+get the code size. This is easy to do in something like DeZog.  The sna file format has a fair amount of overhead as it's a memory snapshot and saves
+complete memory banks, but it's the most likely to work with an emulator. I've also included a .nex file for the ZX Spectrum NEXT which is a bit
+more compact (16896) but fewer emulators support the format.
