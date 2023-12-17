@@ -16,20 +16,6 @@
 ;		Added Fill_Attr routine
 ;
 
-; Simple clear-screen routine
-; Uses LDIR to block clear memory
-; A:  Colour to clear attribute block of memory with
-;
-Clear_Screen:		LD HL,16384			; Start address of screen bitmap
-			LD DE,16385			; Address + 1
-			LD BC,6144			; Length of bitmap memory to clear
-			LD (HL),0			; Set the first byte to 0
-			LDIR				; Copy this byte to the second, and so on
-			LD BC,767			; Length of attribute memory, less one to clear
-			LD (HL),A			; Set the first byte to A
-			LDIR				; Copy this byte to the second, and so on
-			RET
-
 ; Get screen address
 ; H = Y character position
 ; L = X character position
@@ -51,8 +37,8 @@ Get_Char_Address:	LD A,H
 
 ; Print a single character out to an X/Y position
 ;  A: Character to print
-;  C: X Coordinate
-;  B: Y Coordinate
+;  L: X Coordinate
+;  H: Y Coordinate
 ; DE: Address of character set
 ;
 Print_Char_At:		PUSH AF
